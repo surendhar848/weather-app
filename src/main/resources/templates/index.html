@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* BODY AND FONT */
+        body {
+        font-family: 'Roboto', sans-serif;
+        color: #fff;
+        text-align: center;
+        padding: 50px;
+        background: url('https://static.vecteezy.com/system/resources/thumbnails/042/195/725/small/ai-generated-rainy-sky-background-free-photo.jpg')
+                    no-repeat center center fixed;
+        background-size: cover;
+    }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 3em;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* INPUT AND BUTTON */
+        input[type="text"] {
+            padding: 12px;
+            width: 250px;
+            border-radius: 25px;
+            border: none;
+            margin-right: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            width: 300px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background-color: #ff9800;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ffb74d;
+            transform: scale(1.1);
+        }
+
+        /* WEATHER BOX */
+        .weather-box {
+            margin-top: 40px;
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 30px 50px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease-out;
+            transition: transform 0.3s ease;
+        }
+
+        .weather-box:hover {
+            transform: scale(1.05);
+        }
+
+        /* WEATHER ICON */
+        .weather-box img {
+            width: 120px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* INFO TEXT */
+        .info {
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        .error {
+            color: #ff6666;
+            margin-top: 20px;
+            font-weight: bold;
+            animation: shake 0.5s;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Weather App 🌤️</h1>
+
+    <form action="/weather" method="post">
+        <input type="text" name="city" placeholder="Enter city e.g. Chennai"/>
+        <button type="submit">Get Weather</button>
+    </form>
+
+    <!-- Error Message -->
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Weather Result -->
+    <div th:if="${weather}" class="weather-box">
+        <h2 th:text="${city}"></h2>
+        <img th:src="'http://openweathermap.org/img/wn/' + ${weather.icon} + '@2x.png'" alt="Weather icon"/>
+        <div class="info">Temperature: <span th:text="${weather.temperature}"></span> °C</div>
+        <div class="info">Description: <span th:text="${weather.description}"></span></div>
+        <div class="info">Humidity: <span th:text="${weather.humidity}"></span>%</div>
+        <div class="info">Wind Speed: <span th:text="${weather.windSpeed}"></span> m/s</div>
+    </div>
+</body>
+</html>
